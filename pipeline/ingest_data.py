@@ -4,6 +4,7 @@
 import pandas as pd
 from sqlalchemy import create_engine
 from tqdm.auto import tqdm
+import click
 
 dtype = {
     "VendorID": "Int64",
@@ -29,24 +30,18 @@ parse_dates = [
     "tpep_dropoff_datetime"
 ]
 
-
-def run_function():
-    year = 2021
-    month = 1
-
-    pg_user = 'root'
-    pg_pass = 'root'
-    pg_host = 'localhost'
-    pg_port = 5432
-    pg_db = 'ny_taxi'
+@click.command()
+@click.option('--user', default='root', help='PostgreSQL user')
+@click.option('--password', default='root', help='PostgreSQL password')
+@click.option('--host', default='localhost', help='PostgreSQL host')
+@click.option('--port', default=5432, type=int, help='PostgreSQL port')
+@click.option('--db', default='ny_taxi', help='PostgreSQL database name')
+@click.option('--table', default='yellow_taxi_data', help='Target table name')
+@click.option('--url', help='URL of the csv file')
+def run_function(user, password, host, port, db, table, url):
+    engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{db}')
 
     chunksize = 100000
-
-    prefix = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/'
-    url = f'{prefix}/yellow_tripdata_{year}-{month:02d}.csv.gz'
-    engine = create_engine(f'postgresql://{pg_user}:{pg_pass}@{pg_host}:{pg_port}/{pg_db}')
-
-    target_table = 'yellow_taxi_data'
 
     df_iter = pd.read_csv(
         url,
@@ -56,24 +51,21 @@ def run_function():
         chunksize=chunksize,
     )
 
-
     first = True
     for df_chunk in tqdm(df_iter):
         if first:
             df_chunk.head(0).to_sql(
-                name=target_table,
+                name=table,
                 con=engine, 
                 if_exists='replace'
             )
+            first = False
 
-            df_chunk.to_sql(
-                name = target_table,
-                con = engine,
-                if_exists = 'append'
-            )
-
+        df_chunk.to_sql(
+            name=table,
+            con=engine,
+            if_exists='append'
+        )
 
 if __name__ == '__main__':
     run_function()
-
-
