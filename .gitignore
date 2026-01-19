@@ -69,6 +69,12 @@ instance/
 # Scrapy stuff:
 .scrapy
 
+ny_taxi_postgres_data/
+pipeline/ny_taxi_postgres_data/
+*.db
+*.sqlite
+__pycache__/
+
 # Sphinx documentation
 docs/_build/
 
