@@ -1,0 +1,1 @@
+docker exec -it data-engineering-zoomcamp-postgres-1 psql -U root -d ny_taxi
