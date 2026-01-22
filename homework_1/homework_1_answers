@@ -106,7 +106,3 @@ terraform import, terraform apply -y, terraform rm
 
 Answer:
 terraform init, terraform apply -auto-approve, terraform destroy (also like the last one a lot!)
-
-##
-Project ID: de-zoomcamp-2026-484911. It cannot be changed later.
-Email address: terraform-runner@project-c56596c6-9fcd-4359-9a0.iam.gserviceaccount.com 
