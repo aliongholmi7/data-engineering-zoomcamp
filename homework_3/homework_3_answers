@@ -117,6 +117,11 @@ Question 6. Write a query to retrieve the distinct VendorIDs between tpep_dropof
 5.87 MB for non-partitioned table and 0 MB for the partitioned table
 310.31 MB for non-partitioned table and 285.64 MB for the partitioned table
 
+Answer: 310.24 MB for non-partitioned table and 26.84 MB for the partitioned table
+
+Solution:
+select distinct VendorID from `zoomcamp2026.yellow_tripdata_2024_optimized`
+where tpep_dropoff_datetime between '2024-03-01' and '2024-03-15'
 
 -------------
 Question 7. Where is the data stored in the External Table you created? (1 point)
@@ -125,9 +130,15 @@ Container Registry
 GCP Bucket
 Big Table
 
+Answer: GCP Bucket
 
+Solution:
 
 -------------
 Question 8. It is best practice in Big Query to always cluster your data: (1 point)
 True
 False
+
+Answer: False
+
+Solution:
